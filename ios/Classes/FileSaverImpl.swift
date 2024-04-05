@@ -21,6 +21,9 @@ class FileSaverImpl: NSObject, FileSaverApi, UIDocumentPickerDelegate {
             doc.appendPathComponent(destinationFileNameFromPath)
             destinationPath = doc
             NSLog("Destination folder: \(doc)")
+            if FileManager.default.fileExists(atPath: destinationPath!.path) {
+                try FileManager.default.removeItem(at: destinationPath!)
+            }
             try FileManager.default.copyItem(at: tempFileUrl!, to: doc)
         } catch {
             completion(nil, FlutterError(code: "CouldNotCopyException", message: error.localizedDescription, details: nil))
